@@ -81,7 +81,7 @@ const ABI_DEFINITION: { [key in CommandType]: string[] } = {
   [CommandType.PERMIT2_TRANSFER_FROM]: ['address', 'address', 'uint160'],
   [CommandType.PERMIT2_TRANSFER_FROM_BATCH]: [PERMIT2_TRANSFER_FROM_BATCH_STRUCT],
 
-  // Uniswap Actions
+  // Cytoswap Actions
   [CommandType.V3_SWAP_EXACT_IN]: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
   [CommandType.V3_SWAP_EXACT_OUT]: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
   [CommandType.V2_SWAP_EXACT_IN]: ['address', 'uint256', 'uint256', 'address[]', 'bool'],

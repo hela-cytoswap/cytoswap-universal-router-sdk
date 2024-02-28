@@ -1,11 +1,10 @@
-import abi from '../../../abis/Element.json'
 import { Interface } from '@ethersproject/abi'
-import { BuyItem, Market, NFTTrade, TokenType } from '../NFTTrade'
-import { TradeConfig } from '../Command'
-import { RoutePlanner, CommandType } from '../../utils/routerCommands'
 import { BigNumber } from 'ethers'
+import abi from '../../../abis/Element.json'
 import { ZERO_ADDRESS } from '../../utils/constants'
-import { ZERO } from '@cytoswap/router-sdk'
+import { CommandType, RoutePlanner } from '../../utils/routerCommands'
+import { TradeConfig } from '../Command'
+import { BuyItem, Market, NFTTrade, TokenType } from '../NFTTrade'
 
 export interface Fee {
   recipient: string

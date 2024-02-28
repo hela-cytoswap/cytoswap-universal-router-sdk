@@ -1,6 +1,6 @@
 {
   "name": "@cytoswap/universal-router-sdk",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Sdk for integrating with the Universal Router contracts",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

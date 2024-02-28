@@ -4,7 +4,7 @@ import { PermitSingle } from '@uniswap/permit2-sdk'
 import { defaultAbiCoder } from 'ethers/lib/utils'
 import { encodePermit } from '../../src/utils/inputTokens'
 import { RoutePlanner } from '../../src/utils/routerCommands'
-import { USDC } from './uniswapData'
+import { USDC } from './cytoswapData'
 import { generatePermitSignature, makePermit } from './permit2'
 
 const PERMIT_STRUCT =

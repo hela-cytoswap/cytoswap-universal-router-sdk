@@ -13,7 +13,7 @@ import {
 } from '@cytoswap/v3-sdk'
 import { SwapOptions } from '../../src'
 import { CurrencyAmount, TradeType, Ether, Token, Percent, Currency } from '@cytoswap/sdk-core'
-import IUniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
+import CytoswapV3Pool from '@cytoswap/v3-core/artifacts/contracts/CytoswapV3Pool.sol/CytoswapV3Pool.json'
 import { TEST_RECIPIENT_ADDRESS } from './addresses'
 
 const V2_FACTORY = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
@@ -53,7 +53,7 @@ export const DAI = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18
 export const USDC = new Token(1, '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 6, 'USDC', 'USD Coin')
 export const FEE_AMOUNT = FeeAmount.MEDIUM
 
-type UniswapPools = {
+type CytoswapPools = {
   WETH_USDC_V2: Pair
   USDC_DAI_V2: Pair
   WETH_USDC_V3: Pool
@@ -61,7 +61,7 @@ type UniswapPools = {
   USDC_DAI_V3: Pool
 }
 
-export async function getUniswapPools(forkBlock?: number): Promise<UniswapPools> {
+export async function getCytoswapPools(forkBlock?: number): Promise<CytoswapPools> {
   const fork = forkBlock ?? FORK_BLOCK
   const WETH_USDC_V2 = await getPair(WETH, USDC, fork)
   const USDC_DAI_V2 = await getPair(USDC, DAI, fork)
@@ -94,7 +94,7 @@ export async function getPair(tokenA: Token, tokenB: Token, blockNumber: number)
 export async function getPool(tokenA: Token, tokenB: Token, feeAmount: FeeAmount, blockNumber: number): Promise<Pool> {
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
   const poolAddress = Pool.getAddress(token0, token1, feeAmount)
-  const contract = new ethers.Contract(poolAddress, IUniswapV3Pool.abi, getProvider())
+  const contract = new ethers.Contract(poolAddress, CytoswapV3Pool.abi, getProvider())
   let liquidity = await contract.liquidity({ blockTag: blockNumber })
   let { sqrtPriceX96, tick } = await contract.slot0({ blockTag: blockNumber })
   liquidity = JSBI.BigInt(liquidity.toString())
