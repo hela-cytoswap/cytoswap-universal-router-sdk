@@ -1,6 +1,6 @@
 {
   "name": "@cytoswap/universal-router-sdk",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Sdk for integrating with the Universal Router contracts",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -49,11 +49,11 @@
     "typescript": "^4.3.3"
   },
   "dependencies": {
-    "@cytoswap/router-sdk": "^1.0.0",
-    "@cytoswap/sdk-core": "^1.0.1",
+    "@cytoswap/router-sdk": "^1.0.2",
+    "@cytoswap/sdk-core": "^1.0.5",
     "@cytoswap/universal-router": "^1.0.0",
-    "@cytoswap/v2-sdk": "^1.0.0",
-    "@cytoswap/v3-sdk": "^1.0.1",
+    "@cytoswap/v2-sdk": "^1.0.2",
+    "@cytoswap/v3-sdk": "^1.0.5",
     "@uniswap/permit2-sdk": "^1.2.0",
     "bignumber.js": "^9.0.2",
     "ethers": "^5.3.1"
