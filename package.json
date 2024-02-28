@@ -1,7 +1,7 @@
 {
-  "name": "@uniswap/universal-router-sdk",
-  "version": "1.7.1",
-  "description": "sdk for integrating with the Universal Router contracts",
+  "name": "@cytoswap/universal-router-sdk",
+  "version": "1.0.3",
+  "description": "Sdk for integrating with the Universal Router contracts",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -17,7 +17,7 @@
     "test:all": "yarn test:hardhat && yarn test:forge",
     "test:hardhat": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' hardhat test",
     "test:forge": "forge test",
-    "install:ur": "cd node_modules/@uniswap/universal-router && forge install",
+    "install:ur": "cd node_modules/@cytoswap/universal-router && forge install",
     "build": "tsdx build",
     "prettier:fix": "prettier --write '**/*.ts' && prettier --write '**/*.json'",
     "forge:fix": "forge fmt",
@@ -25,7 +25,7 @@
     "prettier": "prettier --check '**/*.ts' && prettier --check '**/*.json'",
     "docs": "typedoc"
   },
-  "author": "@Uniswap",
+  "author": "@Cytoswap",
   "prettier": {
     "printWidth": 120,
     "semi": false,
@@ -49,21 +49,17 @@
     "typescript": "^4.3.3"
   },
   "dependencies": {
+    "@cytoswap/router-sdk": "^1.0.2",
+    "@cytoswap/sdk-core": "^1.0.5",
+    "@cytoswap/universal-router": "^1.0.0",
+    "@cytoswap/v2-sdk": "^1.0.2",
+    "@cytoswap/v3-sdk": "^1.0.5",
     "@uniswap/permit2-sdk": "^1.2.0",
-    "@uniswap/router-sdk": "^1.8.0",
-    "@uniswap/sdk-core": "^4.0.7",
-    "@uniswap/universal-router": "1.6.0",
-    "@uniswap/v2-sdk": "^4.1.0",
-    "@uniswap/v3-sdk": "^3.10.1",
     "bignumber.js": "^9.0.2",
     "ethers": "^5.3.1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Uniswap/universal-router-sdk.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Uniswap/universal-router-sdk/issues"
-  },
-  "homepage": "https://github.com/Uniswap/universal-router-sdk#readme"
+    "url": "https://gitlab.snapresearch.io/swapnity/cytoswap-universal-router-sdk.git"
+  }
 }

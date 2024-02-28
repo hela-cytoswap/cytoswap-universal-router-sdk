@@ -1,13 +1,13 @@
 import invariant from 'tiny-invariant'
-import { abi } from '@uniswap/universal-router/artifacts/contracts/UniversalRouter.sol/UniversalRouter.json'
+import { abi } from '@cytoswap/universal-router/artifacts/contracts/UniversalRouter.sol/UniversalRouter.json'
 import { Interface } from '@ethersproject/abi'
 import { BigNumber, BigNumberish } from 'ethers'
-import { MethodParameters } from '@uniswap/v3-sdk'
-import { Trade as RouterTrade } from '@uniswap/router-sdk'
-import { Currency, TradeType } from '@uniswap/sdk-core'
+import { MethodParameters } from '@cytoswap/v3-sdk'
+import { Trade as RouterTrade } from '@cytoswap/router-sdk'
+import { Currency, TradeType } from '@cytoswap/sdk-core'
 import { Command, RouterTradeType } from './entities/Command'
 import { Market, NFTTrade, SupportedProtocolsData } from './entities/NFTTrade'
-import { UniswapTrade, SwapOptions } from './entities/protocols/uniswap'
+import { CytoswapTrade, SwapOptions } from './entities/protocols/cytoswap'
 import { UnwrapWETH } from './entities/protocols/unwrapWETH'
 import { CommandType, RoutePlanner } from './utils/routerCommands'
 import { encodePermit } from './utils/inputTokens'
@@ -65,13 +65,13 @@ export abstract class SwapRouter {
           currentNativeValueInRouter = currentNativeValueInRouter.sub(tradePrice)
         }
         /**
-         * is UniswapTrade
+         * is CytoswapTrade
          */
-      } else if (trade.tradeType == RouterTradeType.UniswapTrade) {
-        const uniswapTrade = trade as UniswapTrade
-        const inputIsNative = uniswapTrade.trade.inputAmount.currency.isNative
-        const outputIsNative = uniswapTrade.trade.outputAmount.currency.isNative
-        const swapOptions = uniswapTrade.options
+      } else if (trade.tradeType == RouterTradeType.CytoswapTrade) {
+        const cytoswapTrade = trade as CytoswapTrade
+        const inputIsNative = cytoswapTrade.trade.inputAmount.currency.isNative
+        const outputIsNative = cytoswapTrade.trade.outputAmount.currency.isNative
+        const swapOptions = cytoswapTrade.options
 
         invariant(!(inputIsNative && !!swapOptions.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
 
@@ -81,16 +81,16 @@ export abstract class SwapRouter {
 
         if (inputIsNative) {
           transactionValue = transactionValue.add(
-            BigNumber.from(uniswapTrade.trade.maximumAmountIn(swapOptions.slippageTolerance).quotient.toString())
+            BigNumber.from(cytoswapTrade.trade.maximumAmountIn(swapOptions.slippageTolerance).quotient.toString())
           )
         }
         // track amount of native currency in the router
         if (outputIsNative && swapOptions.recipient == ROUTER_AS_RECIPIENT) {
           currentNativeValueInRouter = currentNativeValueInRouter.add(
-            BigNumber.from(uniswapTrade.trade.minimumAmountOut(swapOptions.slippageTolerance).quotient.toString())
+            BigNumber.from(cytoswapTrade.trade.minimumAmountOut(swapOptions.slippageTolerance).quotient.toString())
           )
         }
-        uniswapTrade.encode(planner, { allowRevert: false })
+        cytoswapTrade.encode(planner, { allowRevert: false })
         /**
          * is UnwrapWETH
          */
@@ -102,7 +102,7 @@ export abstract class SwapRouter {
          * else
          */
       } else {
-        throw 'trade must be of instance: UniswapTrade or NFTTrade'
+        throw 'trade must be of instance: CytoswapTrade or NFTTrade'
       }
     }
 
@@ -149,7 +149,7 @@ export abstract class SwapRouter {
     // TODO: use permit if signature included in swapOptions
     const planner = new RoutePlanner()
 
-    const trade: UniswapTrade = new UniswapTrade(trades, options)
+    const trade: CytoswapTrade = new CytoswapTrade(trades, options)
 
     const inputCurrency = trade.trade.inputAmount.currency
     invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')

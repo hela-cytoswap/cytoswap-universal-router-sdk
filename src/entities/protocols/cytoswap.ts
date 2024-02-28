@@ -1,6 +1,6 @@
 import { RoutePlanner, CommandType } from '../../utils/routerCommands'
-import { Trade as V2Trade, Pair } from '@uniswap/v2-sdk'
-import { Trade as V3Trade, Pool, encodeRouteToPath } from '@uniswap/v3-sdk'
+import { Trade as V2Trade, Pair } from '@cytoswap/v2-sdk'
+import { Trade as V3Trade, Pool, encodeRouteToPath } from '@cytoswap/v3-sdk'
 import {
   Trade as RouterTrade,
   MixedRouteTrade,
@@ -14,9 +14,9 @@ import {
   getOutputOfPools,
   encodeMixedRouteToPath,
   partitionMixedRouteByProtocol,
-} from '@uniswap/router-sdk'
+} from '@cytoswap/router-sdk'
 import { Permit2Permit } from '../../utils/inputTokens'
-import { Currency, TradeType, CurrencyAmount, Percent } from '@uniswap/sdk-core'
+import { Currency, TradeType, CurrencyAmount, Percent } from '@cytoswap/sdk-core'
 import { Command, RouterTradeType, TradeConfig } from '../Command'
 import { SENDER_AS_RECIPIENT, ROUTER_AS_RECIPIENT, CONTRACT_BALANCE, ETH_ADDRESS } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
@@ -44,10 +44,10 @@ interface Swap<TInput extends Currency, TOutput extends Currency> {
   outputAmount: CurrencyAmount<TOutput>
 }
 
-// Wrapper for uniswap router-sdk trade entity to encode swaps for Universal Router
+// Wrapper for cytoswap router-sdk trade entity to encode swaps for Universal Router
 // also translates trade objects from previous (v2, v3) SDKs
-export class UniswapTrade implements Command {
-  readonly tradeType: RouterTradeType = RouterTradeType.UniswapTrade
+export class CytoswapTrade implements Command {
+  readonly tradeType: RouterTradeType = RouterTradeType.CytoswapTrade
   constructor(public trade: RouterTrade<Currency, Currency, TradeType>, public options: SwapOptions) {
     if (!!options.fee && !!options.flatFee) throw new Error('Only one fee option permitted')
   }
@@ -159,7 +159,7 @@ export class UniswapTrade implements Command {
   }
 }
 
-// encode a uniswap v2 swap
+// encode a cytoswap v2 swap
 function addV2Swap<TInput extends Currency, TOutput extends Currency>(
   planner: RoutePlanner,
   { route, inputAmount, outputAmount }: Swap<TInput, TOutput>,
@@ -194,7 +194,7 @@ function addV2Swap<TInput extends Currency, TOutput extends Currency>(
   }
 }
 
-// encode a uniswap v3 swap
+// encode a cytoswap v3 swap
 function addV3Swap<TInput extends Currency, TOutput extends Currency>(
   planner: RoutePlanner,
   { route, inputAmount, outputAmount }: Swap<TInput, TOutput>,

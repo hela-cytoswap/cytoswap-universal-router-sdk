@@ -2,14 +2,14 @@ import { expect } from 'chai'
 import JSBI from 'jsbi'
 import { BigNumber, utils, Wallet } from 'ethers'
 import { expandTo18Decimals } from '../src/utils/numbers'
-import { SwapRouter, UniswapTrade, FlatFeeOptions } from '../src'
-import { MixedRouteTrade, MixedRouteSDK } from '@uniswap/router-sdk'
-import { Trade as V2Trade, Pair, Route as RouteV2 } from '@uniswap/v2-sdk'
-import { Trade as V3Trade, Route as RouteV3, Pool, FeeOptions } from '@uniswap/v3-sdk'
+import { SwapRouter, CytoswapTrade, FlatFeeOptions } from '../src'
+import { MixedRouteTrade, MixedRouteSDK } from '@cytoswap/router-sdk'
+import { Trade as V2Trade, Pair, Route as RouteV2 } from '@cytoswap/v2-sdk'
+import { Trade as V3Trade, Route as RouteV3, Pool, FeeOptions } from '@cytoswap/v3-sdk'
 import { generatePermitSignature, toInputPermit, makePermit, generateEip2098PermitSignature } from './utils/permit2'
-import { CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core'
+import { CurrencyAmount, Percent, TradeType } from '@cytoswap/sdk-core'
 import { registerFixture } from './forge/writeInterop'
-import { buildTrade, getUniswapPools, swapOptions, ETHER, DAI, USDC } from './utils/uniswapData'
+import { buildTrade, getCytoswapPools, swapOptions, ETHER, DAI, USDC } from './utils/cytoswapData'
 import { hexToDecimalString } from './utils/hexToDecimalString'
 import { FORGE_PERMIT2_ADDRESS, FORGE_ROUTER_ADDRESS, TEST_FEE_RECIPIENT_ADDRESS } from './utils/addresses'
 
@@ -17,7 +17,7 @@ const FORK_BLOCK = 16075500
 
 // note: these tests aren't testing much but registering calldata to interop file
 // for use in forge fork tests
-describe('Uniswap', () => {
+describe('Cytoswap', () => {
   const wallet = new Wallet(utils.zeroPad('0x1234', 32))
   let WETH_USDC_V2: Pair
   let USDC_DAI_V2: Pair
@@ -26,7 +26,7 @@ describe('Uniswap', () => {
   let USDC_DAI_V3: Pool
 
   before(async () => {
-    ;({ WETH_USDC_V2, USDC_DAI_V2, WETH_USDC_V3, USDC_DAI_V3, WETH_USDC_V3_LOW_FEE } = await getUniswapPools(
+    ;({ WETH_USDC_V2, USDC_DAI_V2, WETH_USDC_V3, USDC_DAI_V3, WETH_USDC_V3_LOW_FEE } = await getCytoswapPools(
       FORK_BLOCK
     ))
   })
@@ -41,8 +41,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_1_ETH_FOR_USDC', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_1_ETH_FOR_USDC', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -58,8 +58,8 @@ describe('Uniswap', () => {
       const feeOptions: FeeOptions = { fee: new Percent(5, 100), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ fee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_1_ETH_FOR_USDC_WITH_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_1_ETH_FOR_USDC_WITH_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -74,8 +74,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_1_ETH_FOR_USDC_2_HOP', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_1_ETH_FOR_USDC_2_HOP', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -91,8 +91,8 @@ describe('Uniswap', () => {
       const feeOptions: FeeOptions = { fee: new Percent(5, 100), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ fee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_1_ETH_FOR_USDC_2_HOP_WITH_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_1_ETH_FOR_USDC_2_HOP_WITH_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -107,8 +107,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_1000_USDC_FOR_ETH', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_1000_USDC_FOR_ETH', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -124,8 +124,8 @@ describe('Uniswap', () => {
       const feeOptions: FeeOptions = { fee: new Percent(5, 100), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ fee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_1000_USDC_FOR_ETH_WITH_WETH_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_1000_USDC_FOR_ETH_WITH_WETH_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -142,8 +142,8 @@ describe('Uniswap', () => {
       const signature = await generatePermitSignature(permit, wallet, trade.route.chainId, FORGE_PERMIT2_ADDRESS)
       const opts = swapOptions({ inputTokenPermit: toInputPermit(signature, permit) })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_1000_USDC_FOR_ETH_PERMIT', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_1000_USDC_FOR_ETH_PERMIT', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -160,8 +160,8 @@ describe('Uniswap', () => {
       const signature = await generateEip2098PermitSignature(permit, wallet, trade.route.chainId)
       const opts = swapOptions({ inputTokenPermit: toInputPermit(signature, permit) })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_1000_USDC_FOR_ETH_2098_PERMIT', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_1000_USDC_FOR_ETH_2098_PERMIT', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -190,8 +190,8 @@ describe('Uniswap', () => {
       expect(utils.joinSignature(utils.splitSignature(signature))).to.eq(originalSignature)
       const opts = swapOptions({ inputTokenPermit: toInputPermit(signature, permit) })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_1000_USDC_FOR_ETH_PERMIT_V_RECOVERY_PARAM', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_1000_USDC_FOR_ETH_PERMIT_V_RECOVERY_PARAM', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -206,8 +206,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_10_DAI_FOR_ETH_2_HOP', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_10_DAI_FOR_ETH_2_HOP', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -222,8 +222,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_ETH_FOR_1000_USDC', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_ETH_FOR_1000_USDC', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.not.equal('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -244,8 +244,8 @@ describe('Uniswap', () => {
       const feeOptions: FeeOptions = { fee: new Percent(5, 100), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ fee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_ETH_FOR_1000_USDC_WITH_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_ETH_FOR_1000_USDC_WITH_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.not.equal('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -261,8 +261,8 @@ describe('Uniswap', () => {
       const feeOptions: FlatFeeOptions = { amount: utils.parseUnits('50', 6), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ flatFee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_ETH_FOR_1000_USDC_WITH_FLAT_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_ETH_FOR_1000_USDC_WITH_FLAT_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.not.equal('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -278,8 +278,8 @@ describe('Uniswap', () => {
       const feeOptions: FlatFeeOptions = { amount: utils.parseUnits('5', 18), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ flatFee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_USCD_FOR_10_ETH_WITH_FLAT_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_USCD_FOR_10_ETH_WITH_FLAT_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.equal('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -294,8 +294,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V2_USDC_FOR_1_ETH', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V2_USDC_FOR_1_ETH', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -312,8 +312,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_1_ETH_FOR_USDC', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_1_ETH_FOR_USDC', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -329,8 +329,8 @@ describe('Uniswap', () => {
       const feeOptions: FeeOptions = { fee: new Percent(5, 100), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ fee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_1_ETH_FOR_USDC_WITH_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_1_ETH_FOR_USDC_WITH_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -346,8 +346,8 @@ describe('Uniswap', () => {
       const feeOptions: FlatFeeOptions = { amount: utils.parseUnits('50', 6), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ flatFee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_1_ETH_FOR_USDC_WITH_FLAT_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_1_ETH_FOR_USDC_WITH_FLAT_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -362,8 +362,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_1000_USDC_FOR_ETH', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_1000_USDC_FOR_ETH', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -379,8 +379,8 @@ describe('Uniswap', () => {
       const feeOptions: FeeOptions = { fee: new Percent(5, 100), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ fee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_1000_USDC_FOR_ETH_WITH_WETH_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_1000_USDC_FOR_ETH_WITH_WETH_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -402,8 +402,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({ inputTokenPermit: toInputPermit(signature, permit) })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_1000_USDC_FOR_ETH_PERMIT', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_1000_USDC_FOR_ETH_PERMIT', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -418,8 +418,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_1_ETH_FOR_DAI_2_HOP', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_1_ETH_FOR_DAI_2_HOP', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -434,8 +434,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({ safeMode: true })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      let methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_ETH_FOR_DAI_SAFE_MODE', methodParametersV2)
+      let methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_ETH_FOR_DAI_SAFE_MODE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -450,8 +450,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_ETH_FOR_1000_USDC', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_ETH_FOR_1000_USDC', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.not.equal('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -466,8 +466,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_USDC_FOR_1_ETH', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_USDC_FOR_1_ETH', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -482,8 +482,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_ETH_FOR_1000_DAI_2_HOP', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_ETH_FOR_1000_DAI_2_HOP', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.not.equal('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -498,8 +498,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_DAI_FOR_1_ETH_2_HOP', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_DAI_FOR_1_ETH_2_HOP', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.equal('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -520,8 +520,8 @@ describe('Uniswap', () => {
       const feeOptions: FeeOptions = { fee: new Percent(5, 100), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ fee: feeOptions })
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_V3_DAI_FOR_1_ETH_2_HOP_WITH_WETH_FEE', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_V3_DAI_FOR_1_ETH_2_HOP_WITH_WETH_FEE', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.equal('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -538,8 +538,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_MIXED_1_ETH_FOR_DAI', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_MIXED_1_ETH_FOR_DAI', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -554,8 +554,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_MIXED_1_ETH_FOR_DAI_V2_FIRST', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_MIXED_1_ETH_FOR_DAI_V2_FIRST', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -570,8 +570,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_MIXED_1_ETH_FOR_DAI_V2_ONLY', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_MIXED_1_ETH_FOR_DAI_V2_ONLY', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -586,8 +586,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_MIXED_1_ETH_FOR_DAI_V3_ONLY', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_MIXED_1_ETH_FOR_DAI_V3_ONLY', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(inputEther)
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -602,8 +602,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
-      registerFixture('_UNISWAP_MIXED_DAI_FOR_ETH', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
+      registerFixture('_CYTOSWAP_MIXED_DAI_FOR_ETH', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -625,8 +625,8 @@ describe('Uniswap', () => {
       )
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([v2Trade, v3Trade]), opts)
-      const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([v2Trade, v3Trade]), opts))
-      registerFixture('_UNISWAP_SPLIT_TWO_ROUTES_ETH_TO_USDC', methodParametersV2)
+      const methodParametersV2 = SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([v2Trade, v3Trade]), opts))
+      registerFixture('_CYTOSWAP_SPLIT_TWO_ROUTES_ETH_TO_USDC', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(JSBI.multiply(inputEther, JSBI.BigInt(2)).toString())
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -653,10 +653,10 @@ describe('Uniswap', () => {
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([v2Trade, v3Trade1, v3Trade2]), opts)
       const methodParametersV2 = SwapRouter.swapCallParameters([
-        new UniswapTrade(buildTrade([v2Trade, v3Trade1, v3Trade2]), opts),
+        new CytoswapTrade(buildTrade([v2Trade, v3Trade1, v3Trade2]), opts),
       ])
-      registerFixture('_UNISWAP_SPLIT_TWO_ROUTES_ETH_TO_USDC', methodParametersV2)
-      registerFixture('_UNISWAP_SPLIT_THREE_ROUTES_ETH_TO_USDC', methodParametersV2)
+      registerFixture('_CYTOSWAP_SPLIT_TWO_ROUTES_ETH_TO_USDC', methodParametersV2)
+      registerFixture('_CYTOSWAP_SPLIT_THREE_ROUTES_ETH_TO_USDC', methodParametersV2)
       expect(hexToDecimalString(methodParameters.value)).to.eq(JSBI.multiply(inputEther, JSBI.BigInt(3)).toString())
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
@@ -675,7 +675,7 @@ describe('Uniswap', () => {
       const feeOptions: FlatFeeOptions = { amount: utils.parseUnits('50', 6), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ fee: proportionalFee, flatFee: feeOptions })
       expect(function () {
-        SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
+        SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
       }).to.throw('Only one fee option permitted')
     })
 
@@ -689,7 +689,7 @@ describe('Uniswap', () => {
       const feeOptions: FlatFeeOptions = { amount: utils.parseUnits('5000', 6), recipient: TEST_FEE_RECIPIENT_ADDRESS }
       const opts = swapOptions({ flatFee: feeOptions })
       expect(function () {
-        SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([trade]), opts))
+        SwapRouter.swapCallParameters(new CytoswapTrade(buildTrade([trade]), opts))
       }).to.throw('Flat fee amount greater than minimumAmountOut')
     })
   })

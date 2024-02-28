@@ -32,7 +32,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputSingleNative() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_1_ETH_FOR_USDC");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_1_ETH_FOR_USDC");
 
         assertEq(from.balance, BALANCE);
         assertEq(USDC.balanceOf(RECIPIENT), 0);
@@ -44,7 +44,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputSingleNativeWithFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_1_ETH_FOR_USDC_WITH_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_1_ETH_FOR_USDC_WITH_FEE");
 
         assertEq(from.balance, BALANCE);
         assertEq(USDC.balanceOf(RECIPIENT), 0);
@@ -64,7 +64,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputNative() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_1_ETH_FOR_USDC_2_HOP");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_1_ETH_FOR_USDC_2_HOP");
 
         assertEq(from.balance, BALANCE);
         assertEq(DAI.balanceOf(RECIPIENT), 0);
@@ -78,7 +78,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputNativeWithFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_1_ETH_FOR_USDC_2_HOP_WITH_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_1_ETH_FOR_USDC_2_HOP_WITH_FEE");
 
         assertEq(from.balance, BALANCE);
         assertEq(DAI.balanceOf(RECIPIENT), 0);
@@ -102,7 +102,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputSingleERC20ForETH() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_1000_USDC_FOR_ETH");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_1000_USDC_FOR_ETH");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -118,7 +118,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputSingleERC20ForETHWithWETHFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_1000_USDC_FOR_ETH_WITH_WETH_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_1000_USDC_FOR_ETH_WITH_WETH_FEE");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -152,7 +152,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputSingleERC20WithPermit() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_1000_USDC_FOR_ETH_PERMIT");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_1000_USDC_FOR_ETH_PERMIT");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -167,7 +167,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputSingleERC20With2098Permit() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_1000_USDC_FOR_ETH_2098_PERMIT");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_1000_USDC_FOR_ETH_2098_PERMIT");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -182,7 +182,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputSingleERC20With2098PermitZeroRecoveryParam() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_1000_USDC_FOR_ETH_PERMIT_V_RECOVERY_PARAM");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_1000_USDC_FOR_ETH_PERMIT_V_RECOVERY_PARAM");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -197,7 +197,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactInputERC20() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_10_DAI_FOR_ETH_2_HOP");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_10_DAI_FOR_ETH_2_HOP");
 
         deal(address(DAI), from, BALANCE);
         DAI.approve(address(permit2), BALANCE);
@@ -212,7 +212,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactOutputSingleNative() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_ETH_FOR_1000_USDC");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_ETH_FOR_1000_USDC");
 
         assertEq(from.balance, BALANCE);
         assertEq(USDC.balanceOf(RECIPIENT), 0);
@@ -226,7 +226,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactOutputSingleNativeWithFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_ETH_FOR_1000_USDC_WITH_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_ETH_FOR_1000_USDC_WITH_FEE");
 
         uint256 outputAmount = 1000 * ONE_USDC;
         uint256 feeAmount = ((outputAmount * 10000) / 9500) - outputAmount;
@@ -245,7 +245,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactOutputSingleNativeInputWithFlatFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_ETH_FOR_1000_USDC_WITH_FLAT_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_ETH_FOR_1000_USDC_WITH_FLAT_FEE");
 
         uint256 outputAmount = 1000 * ONE_USDC;
         uint256 feeAmount = 50 * ONE_USDC;
@@ -264,7 +264,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactOutputSingleNativeOutputWithFlatFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_USCD_FOR_10_ETH_WITH_FLAT_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_USCD_FOR_10_ETH_WITH_FLAT_FEE");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -285,7 +285,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV2ExactOutputSingleERC20() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V2_USDC_FOR_1_ETH");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V2_USDC_FOR_1_ETH");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -301,7 +301,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactInputSingleNative() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_1_ETH_FOR_USDC");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_1_ETH_FOR_USDC");
 
         assertEq(from.balance, BALANCE);
         assertEq(USDC.balanceOf(RECIPIENT), 0);
@@ -313,7 +313,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactInputSingleNativeWithFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_1_ETH_FOR_USDC_WITH_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_1_ETH_FOR_USDC_WITH_FEE");
 
         assertEq(from.balance, BALANCE);
         assertEq(USDC.balanceOf(RECIPIENT), 0);
@@ -333,7 +333,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactInputSingleNativeWithFlatFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_1_ETH_FOR_USDC_WITH_FLAT_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_1_ETH_FOR_USDC_WITH_FLAT_FEE");
 
         assertEq(from.balance, BALANCE);
         assertEq(USDC.balanceOf(RECIPIENT), 0);
@@ -353,7 +353,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactInputSingleERC20() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_1000_USDC_FOR_ETH");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_1000_USDC_FOR_ETH");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -368,7 +368,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactInputSingleERC20WithWETHFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_1000_USDC_FOR_ETH_WITH_WETH_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_1000_USDC_FOR_ETH_WITH_WETH_FEE");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -402,7 +402,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactInputSingleERC20WithPermit() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_1000_USDC_FOR_ETH_PERMIT");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_1000_USDC_FOR_ETH_PERMIT");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -416,7 +416,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactInputNative() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_1_ETH_FOR_DAI_2_HOP");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_1_ETH_FOR_DAI_2_HOP");
 
         assertEq(from.balance, BALANCE);
         assertEq(DAI.balanceOf(RECIPIENT), 0);
@@ -428,7 +428,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactInputNativeWithSafeMode() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_ETH_FOR_DAI_SAFE_MODE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_ETH_FOR_DAI_SAFE_MODE");
 
         assertEq(from.balance, BALANCE);
         assertEq(DAI.balanceOf(RECIPIENT), 0);
@@ -444,7 +444,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactOutputSingleNative() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_ETH_FOR_1000_USDC");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_ETH_FOR_1000_USDC");
 
         assertEq(from.balance, BALANCE);
         assertEq(USDC.balanceOf(RECIPIENT), 0);
@@ -456,7 +456,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactOutputSingleERC20() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_USDC_FOR_1_ETH");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_USDC_FOR_1_ETH");
 
         deal(address(USDC), from, BALANCE);
         USDC.approve(address(permit2), BALANCE);
@@ -471,7 +471,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactOutputNative() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_ETH_FOR_1000_DAI_2_HOP");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_ETH_FOR_1000_DAI_2_HOP");
 
         assertEq(from.balance, BALANCE);
         assertEq(DAI.balanceOf(RECIPIENT), 0);
@@ -483,7 +483,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactOutputERC20() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_DAI_FOR_1_ETH_2_HOP");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_DAI_FOR_1_ETH_2_HOP");
 
         uint256 daiAmount = 2000 ether;
         deal(address(DAI), from, daiAmount);
@@ -501,7 +501,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testV3ExactOutputERC20WithWETHFee() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_V3_DAI_FOR_1_ETH_2_HOP_WITH_WETH_FEE");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_V3_DAI_FOR_1_ETH_2_HOP_WITH_WETH_FEE");
 
         uint256 daiAmount = 2000 * ONE_DAI;
         uint256 outputAmount = 1 ether;
@@ -532,7 +532,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testMixedExactInputNative() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_MIXED_1_ETH_FOR_DAI");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_MIXED_1_ETH_FOR_DAI");
 
         assertEq(from.balance, BALANCE);
         assertEq(DAI.balanceOf(RECIPIENT), 0);
@@ -544,7 +544,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testMixedExactInputNativeV2First() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_MIXED_1_ETH_FOR_DAI_V2_FIRST");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_MIXED_1_ETH_FOR_DAI_V2_FIRST");
 
         assertEq(from.balance, BALANCE);
         assertEq(DAI.balanceOf(RECIPIENT), 0);
@@ -556,7 +556,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testMixedExactInputNativeV2Only() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_MIXED_1_ETH_FOR_DAI_V2_ONLY");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_MIXED_1_ETH_FOR_DAI_V2_ONLY");
 
         assertEq(from.balance, BALANCE);
         assertEq(DAI.balanceOf(RECIPIENT), 0);
@@ -568,7 +568,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testMixedExactInputNativeV3Only() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_MIXED_1_ETH_FOR_DAI_V3_ONLY");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_MIXED_1_ETH_FOR_DAI_V3_ONLY");
 
         assertEq(from.balance, BALANCE);
         assertEq(DAI.balanceOf(RECIPIENT), 0);
@@ -580,7 +580,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testMixedExactInputERC20V2ToV3() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_MIXED_DAI_FOR_ETH");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_MIXED_DAI_FOR_ETH");
 
         uint256 daiAmount = 1000 ether;
         deal(address(DAI), from, daiAmount);
@@ -596,7 +596,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testTwoRoutesExactInputETHtoUSDC() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_SPLIT_TWO_ROUTES_ETH_TO_USDC");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_SPLIT_TWO_ROUTES_ETH_TO_USDC");
 
         assertEq(from.balance, BALANCE);
         assertEq(USDC.balanceOf(RECIPIENT), 0);
@@ -610,7 +610,7 @@ contract SwapERC20CallParametersTest is Test, Interop, DeployRouter {
     }
 
     function testThreeRoutesExactInputETHtoUSDC() public {
-        MethodParameters memory params = readFixture(json, "._UNISWAP_SPLIT_THREE_ROUTES_ETH_TO_USDC");
+        MethodParameters memory params = readFixture(json, "._CYTOSWAP_SPLIT_THREE_ROUTES_ETH_TO_USDC");
 
         assertEq(from.balance, BALANCE);
         assertEq(USDC.balanceOf(RECIPIENT), 0);

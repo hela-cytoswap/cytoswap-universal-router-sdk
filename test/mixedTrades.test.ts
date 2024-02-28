@@ -5,14 +5,14 @@ import { utils, Wallet } from 'ethers'
 import { LooksRareV2Data, LooksRareV2Trade } from '../src/entities/protocols/looksRareV2'
 import { looksRareV2Orders } from './orders/looksRareV2'
 import { seaportV1_4DataETHRecent } from './orders/seaportV1_4'
-import { Trade as V2Trade, Route as RouteV2, Pair } from '@uniswap/v2-sdk'
-import { Trade as V3Trade, Route as RouteV3, Pool } from '@uniswap/v3-sdk'
+import { Trade as V2Trade, Route as RouteV2, Pair } from '@cytoswap/v2-sdk'
+import { Trade as V3Trade, Route as RouteV3, Pool } from '@cytoswap/v3-sdk'
 import { generatePermitSignature, makePermit } from './utils/permit2'
 
-import { UniswapTrade } from '../src'
-import { CurrencyAmount, TradeType } from '@uniswap/sdk-core'
+import { CytoswapTrade } from '../src'
+import { CurrencyAmount, TradeType } from '@cytoswap/sdk-core'
 import { registerFixture } from './forge/writeInterop'
-import { buildTrade, getUniswapPools, swapOptions, DAI, ETHER, WETH, USDC } from './utils/uniswapData'
+import { buildTrade, getCytoswapPools, swapOptions, DAI, ETHER, WETH, USDC } from './utils/cytoswapData'
 import {
   FORGE_PERMIT2_ADDRESS,
   FORGE_ROUTER_ADDRESS,
@@ -48,7 +48,7 @@ describe('SwapRouter.swapCallParameters', () => {
     let WETH_USDC_V2: Pair
 
     beforeEach(async () => {
-      ;({ WETH_USDC_V3, USDC_DAI_V2, WETH_USDC_V2 } = await getUniswapPools(15360000))
+      ;({ WETH_USDC_V3, USDC_DAI_V2, WETH_USDC_V2 } = await getCytoswapPools(15360000))
     })
 
     it('erc20 -> 1 looksrare nft', async () => {
@@ -60,9 +60,9 @@ describe('SwapRouter.swapCallParameters', () => {
         ),
       ])
       const opts = swapOptions({ recipient: ROUTER_AS_RECIPIENT })
-      const uniswapTrade = new UniswapTrade(erc20Trade, opts)
+      const cytoswapTrade = new CytoswapTrade(erc20Trade, opts)
 
-      const methodParameters = SwapRouter.swapCallParameters([uniswapTrade, looksRareV2Trade], {
+      const methodParameters = SwapRouter.swapCallParameters([cytoswapTrade, looksRareV2Trade], {
         sender: FORGE_SENDER_ADDRESS,
       })
       registerFixture('_ERC20_FOR_1_LOOKSRARE_NFT', methodParameters)
@@ -106,9 +106,9 @@ describe('SwapRouter.swapCallParameters', () => {
         ),
       ])
       const opts = swapOptions({ recipient: ROUTER_AS_RECIPIENT })
-      const uniswapTrade = new UniswapTrade(erc20Trade, opts)
+      const cytoswapTrade = new CytoswapTrade(erc20Trade, opts)
 
-      const methodParameters = SwapRouter.swapCallParameters([uniswapTrade, looksRareV2Trade], {
+      const methodParameters = SwapRouter.swapCallParameters([cytoswapTrade, looksRareV2Trade], {
         sender: FORGE_SENDER_ADDRESS,
       })
       registerFixture('_ERC20_AND_ETH_FOR_1_LOOKSRARE_NFT', methodParameters)
@@ -126,9 +126,9 @@ describe('SwapRouter.swapCallParameters', () => {
         ),
       ])
       const opts = swapOptions({ recipient: ROUTER_AS_RECIPIENT })
-      const uniswapTrade = new UniswapTrade(erc20Trade, opts)
+      const cytoswapTrade = new CytoswapTrade(erc20Trade, opts)
 
-      const methodParameters = SwapRouter.swapCallParameters([uniswapTrade, looksRareV2Trade, seaportTrade], {
+      const methodParameters = SwapRouter.swapCallParameters([cytoswapTrade, looksRareV2Trade, seaportTrade], {
         sender: FORGE_SENDER_ADDRESS,
       })
       registerFixture('_ERC20_FOR_1_LOOKSRARE_NFT_1_SEAPORT_NFT', methodParameters)
@@ -144,9 +144,9 @@ describe('SwapRouter.swapCallParameters', () => {
         ),
       ])
       const opts = swapOptions({ recipient: ROUTER_AS_RECIPIENT })
-      const uniswapTrade = new UniswapTrade(erc20Trade, opts)
+      const cytoswapTrade = new CytoswapTrade(erc20Trade, opts)
 
-      const methodParameters = SwapRouter.swapCallParameters([uniswapTrade, looksRareV2Trade, seaportTrade], {
+      const methodParameters = SwapRouter.swapCallParameters([cytoswapTrade, looksRareV2Trade, seaportTrade], {
         sender: FORGE_SENDER_ADDRESS,
       })
       registerFixture('_ERC20_AND_ETH_FOR_1_LOOKSRARE_NFT_1_SEAPORT_NFT', methodParameters)
@@ -169,10 +169,10 @@ describe('SwapRouter.swapCallParameters', () => {
         ),
       ])
       const opts = swapOptions({ recipient: ROUTER_AS_RECIPIENT })
-      const uniswapTrade1 = new UniswapTrade(erc20Trade1, opts)
-      const uniswapTrade2 = new UniswapTrade(erc20Trade2, opts)
+      const cytoswapTrade1 = new CytoswapTrade(erc20Trade1, opts)
+      const cytoswapTrade2 = new CytoswapTrade(erc20Trade2, opts)
 
-      const methodParameters = SwapRouter.swapCallParameters([uniswapTrade1, uniswapTrade2, looksRareV2Trade], {
+      const methodParameters = SwapRouter.swapCallParameters([cytoswapTrade1, cytoswapTrade2, looksRareV2Trade], {
         sender: FORGE_SENDER_ADDRESS,
       })
       registerFixture('_2_ERC20s_FOR_1_NFT', methodParameters)
@@ -188,9 +188,9 @@ describe('SwapRouter.swapCallParameters', () => {
         ),
       ])
       const opts = swapOptions({ recipient: ROUTER_AS_RECIPIENT })
-      const uniswapTrade = new UniswapTrade(erc20Trade, opts)
+      const cytoswapTrade = new CytoswapTrade(erc20Trade, opts)
 
-      const methodParameters = SwapRouter.swapCallParameters([uniswapTrade, invalidLooksRareV2Trade], {
+      const methodParameters = SwapRouter.swapCallParameters([cytoswapTrade, invalidLooksRareV2Trade], {
         sender: FORGE_SENDER_ADDRESS,
       })
       registerFixture('_ERC20_FOR_1_INVALID_NFT', methodParameters)
@@ -208,10 +208,10 @@ describe('SwapRouter.swapCallParameters', () => {
         ),
       ])
       const opts = swapOptions({ recipient: ROUTER_AS_RECIPIENT })
-      const uniswapTrade = new UniswapTrade(erc20Trade, opts)
+      const cytoswapTrade = new CytoswapTrade(erc20Trade, opts)
 
       // invalid looks rare trade to make it a partial fill
-      const methodParameters = SwapRouter.swapCallParameters([uniswapTrade, invalidLooksRareV2Trade, seaportTrade], {
+      const methodParameters = SwapRouter.swapCallParameters([cytoswapTrade, invalidLooksRareV2Trade, seaportTrade], {
         sender: FORGE_SENDER_ADDRESS,
       })
       registerFixture('_ERC20_FOR_NFTS_PARTIAL_FILL', methodParameters)
